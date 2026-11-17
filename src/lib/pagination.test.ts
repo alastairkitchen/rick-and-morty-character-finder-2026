@@ -40,6 +40,18 @@ describe("getPageItems", () => {
     ]);
   });
 
+  it("adds both ellipses in middle", () => {
+    expect(getPageItems(6, 20)).toEqual([
+      1,
+      "ellipsis-start",
+      5,
+      6,
+      7,
+      "ellipsis-end",
+      20,
+    ]);
+  });
+
   it("adds start ellipsis near end", () => {
     expect(getPageItems(10, 10)).toEqual([1, "ellipsis-start", 9, 10]);
   });

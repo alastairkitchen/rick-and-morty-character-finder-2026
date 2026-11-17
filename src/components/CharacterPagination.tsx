@@ -22,6 +22,8 @@ export function CharacterPagination({
 }: CharacterPaginationProps) {
   if (totalPages <= 1) return null;
 
+  const pageItems = getPageItems(currentPage, totalPages);
+
   return (
     <Pagination>
       <PaginationContent>
@@ -30,7 +32,7 @@ export function CharacterPagination({
             <PaginationPrevious href={pageHref(currentPage - 1)} />
           </PaginationItem>
         )}
-        {getPageItems(currentPage, totalPages).map((item) =>
+        {pageItems.map((item) =>
           typeof item === "number" ? (
             <PaginationItem key={item}>
               <PaginationLink

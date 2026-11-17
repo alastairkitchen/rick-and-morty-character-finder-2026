@@ -1,8 +1,9 @@
-import { CharacterCard } from "@/components/character-card";
-import { CharacterPagination } from "@/components/character-pagination";
+import { getCharacters, revalidateCharacters } from "@/actions/characters";
+import { CharacterCard } from "@/components/CharacterCard";
+import { CharacterPagination } from "@/components/CharacterPagination";
+import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { parsePage } from "@/lib/pagination";
-import { getCharacters } from "@/lib/rick-and-morty";
 
 interface CharacterListProps {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
@@ -22,6 +23,11 @@ export async function CharacterList({ searchParams }: CharacterListProps) {
 
   return (
     <div className="space-y-8">
+      <form action={revalidateCharacters} className="flex justify-end">
+        <Button type="submit" variant="outline" size="sm">
+          Refresh characters
+        </Button>
+      </form>
       <ul className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
         {characters.map((character) => (
           <li key={character.id}>

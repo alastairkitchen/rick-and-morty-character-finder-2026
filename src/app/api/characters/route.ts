@@ -1,5 +1,5 @@
 import { parsePage } from "@/lib/pagination";
-import { getCharacters } from "@/lib/rick-and-morty";
+import { getCharacters } from "@/actions/characters";
 
 export async function GET(request: Request) {
   const page = parsePage(new URL(request.url).searchParams.get("page"));

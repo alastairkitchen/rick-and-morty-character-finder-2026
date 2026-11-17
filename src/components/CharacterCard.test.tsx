@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 
-import { CharacterCard } from "@/components/character-card";
-import type { Character } from "@/lib/rick-and-morty";
+import { CharacterCard } from "@/components/CharacterCard";
+import type { Character } from "@/types/character";
 
 const base: Character = {
   id: 1,

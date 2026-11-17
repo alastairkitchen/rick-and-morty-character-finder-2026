@@ -1,7 +1,7 @@
 import Image from "next/image";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import type { Character, CharacterStatus } from "@/lib/rick-and-morty";
+import type { Character, CharacterStatus } from "@/types/character";
 import { cn } from "@/lib/utils";
 
 const statusDotClass: Record<CharacterStatus, string> = {

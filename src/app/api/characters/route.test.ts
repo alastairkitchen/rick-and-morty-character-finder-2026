@@ -1,8 +1,8 @@
 /** @jest-environment node */
 import { GET } from "@/app/api/characters/route";
-import { getCharacters } from "@/lib/rick-and-morty";
+import { getCharacters } from "@/actions/characters";
 
-jest.mock("@/lib/rick-and-morty", () => ({ getCharacters: jest.fn() }));
+jest.mock("@/actions/characters", () => ({ getCharacters: jest.fn() }));
 
 const mockGetCharacters = getCharacters as jest.Mock;
 

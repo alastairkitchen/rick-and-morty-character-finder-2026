@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 
-import { CharacterPagination } from "@/components/character-pagination";
+import { CharacterPagination } from "@/components/CharacterPagination";
 
 describe("CharacterPagination", () => {
   it("renders nothing for a single page", () => {
