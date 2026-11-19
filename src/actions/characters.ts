@@ -20,7 +20,6 @@ export async function getCharacters(page: number): Promise<CharactersPage> {
 
   const parsedPage = parsePage(page);
 
-  console.dir(`${API_URL}/character?page=${parsedPage}`);
   const response = await fetch(`${API_URL}/character?page=${parsedPage}`);
 
   // The API returns 404 when the page has no results.
