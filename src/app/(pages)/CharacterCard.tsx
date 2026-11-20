@@ -1,6 +1,15 @@
 import Image from "next/image";
+import { Heart } from "lucide-react";
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+
 import type { Character, CharacterStatus } from "@/types/character";
 import { cn } from "@/lib/utils";
 
@@ -47,6 +56,11 @@ export const CharacterCard = ({ character }: { character: Character }) => {
             <p className="text-muted-foreground">Origin</p>
             <p>{origin.name}</p>
           </div>
+          <Button variant="outline">
+            <span title="add to favourite">
+              <Heart />
+            </span>
+          </Button>
         </CardContent>
       </div>
     </Card>
