@@ -1,5 +1,7 @@
 export type PageItem = number | "ellipsis-start" | "ellipsis-end";
 
+export const PAGE_SIZE = 20;
+
 export function parsePageNumber(
   value: string | string[] | number | null | undefined,
 ): number {

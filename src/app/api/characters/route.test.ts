@@ -22,9 +22,19 @@ describe("GET /api/characters", () => {
       new Request("http://localhost/api/characters?page=2"),
     );
 
-    expect(mockGetCharacters).toHaveBeenCalledWith(2);
+    expect(mockGetCharacters).toHaveBeenCalledWith(2, "");
     expect(response.status).toBe(200);
     expect(await response.json()).toEqual(payload);
+  });
+
+  it("passes normalised search query", async () => {
+    mockGetCharacters.mockResolvedValue({});
+
+    await GET(
+      new Request("http://localhost/api/characters?q=%20rick%20%20sanchez&page=3"),
+    );
+
+    expect(mockGetCharacters).toHaveBeenCalledWith(3, "rick sanchez");
   });
 
   it("defaults invalid page to 1", async () => {
@@ -32,7 +42,7 @@ describe("GET /api/characters", () => {
 
     await GET(new Request("http://localhost/api/characters?page=abc"));
 
-    expect(mockGetCharacters).toHaveBeenCalledWith(1);
+    expect(mockGetCharacters).toHaveBeenCalledWith(1, "");
   });
 
   it("returns 502 when upstream fails", async () => {

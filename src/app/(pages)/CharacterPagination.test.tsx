@@ -27,6 +27,19 @@ describe("CharacterPagination", () => {
     );
   });
 
+  it("keeps search query in page links", () => {
+    render(<CharacterPagination currentPage={1} totalPages={3} query="rick" />);
+
+    expect(screen.getByRole("link", { name: "2" })).toHaveAttribute(
+      "href",
+      "/?q=rick&page=2",
+    );
+    expect(screen.getByRole("link", { name: "1" })).toHaveAttribute(
+      "href",
+      "/?q=rick",
+    );
+  });
+
   it("hides previous on first page and next on last page", () => {
     const { rerender } = render(
       <CharacterPagination currentPage={1} totalPages={3} />,

@@ -8,20 +8,22 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 import { getPageItems } from "@/lib/pagination";
+import { getHomeHref } from "@/lib/search";
 
 interface CharacterPaginationProps {
   currentPage: number;
   totalPages: number;
+  query?: string;
 }
-
-const pageHref = (page: number) => (page === 1 ? "/" : `/?page=${page}`);
 
 export const CharacterPagination = ({
   currentPage,
   totalPages,
+  query = "",
 }: CharacterPaginationProps) => {
   if (totalPages <= 1) return null;
 
+  const pageHref = (page: number) => getHomeHref({ query, page });
   const pageItems = getPageItems(currentPage, totalPages);
 
   return (
