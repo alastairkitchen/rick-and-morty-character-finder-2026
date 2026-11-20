@@ -4,6 +4,7 @@ import { Suspense } from "react";
 
 import { signOut } from "@/actions/auth";
 import { Button, buttonVariants } from "@/components/ui/button";
+import { ModeToggle } from "@/components/ModeToggle";
 import { getSession } from "@/lib/auth/session";
 
 const HeaderActions = async () => {
@@ -44,9 +45,12 @@ export const Header = () => {
         <Link href="/" className="font-semibold">
           Rick and Morty Finder
         </Link>
-        <Suspense fallback={<div className="h-8 w-24" />}>
-          <HeaderActions />
-        </Suspense>
+        <div className="flex items-center gap-2">
+          <ModeToggle />
+          <Suspense fallback={<div className="h-8 w-24" />}>
+            <HeaderActions />
+          </Suspense>
+        </div>
       </div>
     </header>
   );
