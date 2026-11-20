@@ -72,7 +72,9 @@ async function fetchAllCharacters(): Promise<Character[]> {
     ),
   );
 
-  return [first, ...rest].flatMap((data) => data?.results.map(toCharacter) ?? []);
+  return [first, ...rest].flatMap(
+    (data) => data?.results.map(toCharacter) ?? [],
+  );
 }
 
 async function searchCharactersPage(

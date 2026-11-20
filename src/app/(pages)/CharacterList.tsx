@@ -37,9 +37,7 @@ export const CharacterList = async ({ searchParams }: CharacterListProps) => {
       </div>
       {characters.length === 0 ? (
         <p className="py-16 text-center text-muted-foreground">
-          {query
-            ? `No characters match "${query}".`
-            : "No characters found."}
+          {query ? `No characters match "${query}".` : "No characters found."}
         </p>
       ) : (
         <>

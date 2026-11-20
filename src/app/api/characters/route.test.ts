@@ -31,7 +31,9 @@ describe("GET /api/characters", () => {
     mockGetCharacters.mockResolvedValue({});
 
     await GET(
-      new Request("http://localhost/api/characters?q=%20rick%20%20sanchez&page=3"),
+      new Request(
+        "http://localhost/api/characters?q=%20rick%20%20sanchez&page=3",
+      ),
     );
 
     expect(mockGetCharacters).toHaveBeenCalledWith(3, "rick sanchez");
