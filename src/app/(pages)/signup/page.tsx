@@ -10,7 +10,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { getSession } from "@/lib/session";
+import { getSession } from "@/lib/auth/session";
 
 const SignUpContent = async () => {
   if (await getSession()) redirect("/");
@@ -19,7 +19,7 @@ const SignUpContent = async () => {
 
 const SignUpPage = () => {
   return (
-    <main className="mx-auto flex w-full max-w-md flex-1 items-center px-4 py-12">
+    <div className="mx-auto flex w-full max-w-md flex-1 items-center px-4 py-12">
       <Card className="w-full">
         <CardHeader>
           <CardTitle className="text-xl">Create an account</CardTitle>
@@ -43,7 +43,7 @@ const SignUpPage = () => {
           </Suspense>
         </CardContent>
       </Card>
-    </main>
+    </div>
   );
 };
 

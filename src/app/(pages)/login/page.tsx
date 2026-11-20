@@ -10,7 +10,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { getSession } from "@/lib/session";
+import { getSession } from "@/lib/auth/session";
 
 const LoginContent = async ({
   searchParams,
@@ -37,7 +37,7 @@ const LoginContent = async ({
 
 const LoginPage = ({ searchParams }: PageProps<"/login">) => {
   return (
-    <main className="mx-auto flex w-full max-w-md flex-1 items-center px-4 py-12">
+    <div className="mx-auto flex w-full max-w-md flex-1 items-center px-4 py-12">
       <Card className="w-full">
         <CardHeader>
           <CardTitle className="text-xl">Sign in</CardTitle>
@@ -60,7 +60,7 @@ const LoginPage = ({ searchParams }: PageProps<"/login">) => {
           </Suspense>
         </CardContent>
       </Card>
-    </main>
+    </div>
   );
 };
 

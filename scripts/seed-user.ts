@@ -1,5 +1,5 @@
-import { auth } from "@/lib/auth";
-import { mongoClient } from "@/lib/mongodb";
+import { auth } from "@/lib/auth/auth";
+import { mongoClient } from "@/lib/mongodb/mongodb";
 
 const TEST_USER = {
   name: "Test User",

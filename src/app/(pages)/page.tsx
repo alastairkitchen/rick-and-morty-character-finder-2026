@@ -7,7 +7,7 @@ import {
 
 const Home = ({ searchParams }: PageProps<"/">) => {
   return (
-    <main className="mx-auto w-full max-w-7xl flex-1 px-4 py-8 sm:px-6">
+    <div className="mx-auto w-full max-w-7xl flex-1 px-4 py-8 sm:px-6">
       <header className="mb-8 space-y-2">
         <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">
           Rick and Morty Character Finder
@@ -28,7 +28,7 @@ const Home = ({ searchParams }: PageProps<"/">) => {
       <Suspense fallback={<CharacterListSkeleton />}>
         <CharacterList searchParams={searchParams} />
       </Suspense>
-    </main>
+    </div>
   );
 };
 

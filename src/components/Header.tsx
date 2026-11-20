@@ -4,7 +4,7 @@ import { Suspense } from "react";
 
 import { signOut } from "@/actions/auth";
 import { Button, buttonVariants } from "@/components/ui/button";
-import { getSession } from "@/lib/session";
+import { getSession } from "@/lib/auth/session";
 
 const HeaderActions = async () => {
   const session = await getSession();

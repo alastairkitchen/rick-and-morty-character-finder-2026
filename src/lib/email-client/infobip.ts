@@ -11,7 +11,6 @@ function requireEnv(name: string): string {
   return value;
 }
 
-// Infobip Email API v3: https://www.infobip.com/docs/api/channels/email
 export async function sendEmail({ to, subject, html, text }: SendEmailOptions) {
   const baseUrl = requireEnv("INFOBIP_BASE_URL").replace(/\/+$/, "");
   const apiKey = requireEnv("INFOBIP_API_KEY");

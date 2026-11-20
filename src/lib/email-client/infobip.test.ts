@@ -1,5 +1,5 @@
 /** @jest-environment node */
-import { sendEmail } from "@/lib/infobip";
+import { sendEmail } from "@/lib/email-client/infobip";
 
 const ENV = {
   INFOBIP_BASE_URL: "abc123.api.infobip.com/",

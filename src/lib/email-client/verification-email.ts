@@ -1,4 +1,4 @@
-import { sendEmail } from "@/lib/infobip";
+import { sendEmail } from "@/lib/email-client/infobip";
 
 function escapeHtml(value: string): string {
   return value
@@ -25,9 +25,9 @@ export async function sendVerificationEmail({
     to: email,
     subject: "Verify your email address",
     text: `Hi ${name},\n\nVerify your email address to finish setting up your Rick and Morty Finder account:\n${url}\n\nIf you did not sign up, you can ignore this email.`,
-    html: `<p>Hi ${safeName},</p>
-<p>Verify your email address to finish setting up your Rick and Morty Finder account.</p>
-<p><a href="${safeUrl}">Verify email address</a></p>
-<p>If you did not sign up, you can ignore this email.</p>`,
+    html: ` <p>Hi ${safeName},</p>
+            <p>Verify your email address to finish setting up your Rick and Morty Finder account.</p>
+            <p><a href="${safeUrl}">Verify email address</a></p>
+            <p>If you did not sign up, you can ignore this email.</p>`,
   });
 }

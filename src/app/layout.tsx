@@ -26,7 +26,7 @@ const RootLayout = ({ children }: LayoutProps<"/">) => {
     >
       <body className="min-h-full flex flex-col">
         <Header />
-        {children}
+        <main className="flex flex-1 flex-col">{children}</main>
       </body>
     </html>
   );

@@ -9,7 +9,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
-import { getSession } from "@/lib/session";
+import { getSession } from "@/lib/auth/session";
 
 const AccountDetails = async () => {
   const session = await getSession();
@@ -41,7 +41,7 @@ const AccountDetails = async () => {
 
 const AccountPage = () => {
   return (
-    <main className="mx-auto w-full max-w-md flex-1 px-4 py-12">
+    <div className="mx-auto w-full max-w-md flex-1 px-4 py-12">
       <Card>
         <CardHeader>
           <CardTitle className="text-xl">Account</CardTitle>
@@ -53,7 +53,7 @@ const AccountPage = () => {
           </Suspense>
         </CardContent>
       </Card>
-    </main>
+    </div>
   );
 };
 
