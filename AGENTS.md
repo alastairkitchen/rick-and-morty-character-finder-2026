@@ -96,10 +96,10 @@ Done:
 - `GET /api/characters` route handler and `getCharacters` Server Action
 - Email-password authentication (login, signup, sign out, account page, header) with MongoDB storage
 
-To do, in order:
+To do:
 
 1. **Fuzzy search** on the homepage. Search is combined with pagination, and the query lives in the URL (`?q=`). Use a fuzzy matching library such as Fuse.js.
-2. **Favourites**: favourite and unfavourite button on each character card (signed-in users only). Store favourites in MongoDB keyed by user ID and character ID, with a unique index on that pair.
+2. **Favourites**: favourite and unfavourite button on each character card (signed-in users only). Store favourites in MongoDB keyed by user ID and character ID, with a unique index on that pair. favourites will be saved to the database if a user is logged in, favourites will be saved to local storage if a user is logged out. if a user logs in the local storage data is cleared and favourites from the data base are used as the data source.
 3. **Optimistic updates** for favouriting with `useOptimistic`, rolling back if the action fails.
 4. **Favourites page**: list the user's favourited characters as cards, with batch selection and batch removal.
 5. **Favourite count** on each card showing how many users favourited that character, updated in real time (for example polling or server-sent events). Keep the count query efficient (aggregate or a counter collection).
