@@ -24,14 +24,12 @@ export const FavouriteButton = ({
   const [error, setError] = useState<string | null>(null);
 
   const handleClick = () => {
-    const next = !optimisticFavourited;
+    const nextValue = !optimisticFavourited;
     setError(null);
-    // The optimistic value reverts when the transition ends unless the server
-    // re-render (via updateTag) delivers the new `favourited` prop.
     startTransition(async () => {
-      setOptimisticFavourited(next);
+      setOptimisticFavourited(nextValue);
       try {
-        const result = await setFavourite(characterId, next);
+        const result = await setFavourite(characterId, nextValue);
         if (!result.ok) setError(result.error);
       } catch {
         setError("Could not update favourite.");

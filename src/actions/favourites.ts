@@ -5,14 +5,14 @@ import { cacheLife, cacheTag, updateTag } from "next/cache";
 
 import { getSession } from "@/lib/auth/session";
 import { CACHE_TAGS } from "@/lib/cache-tags";
-import {
-  getFavouritesCollection,
-  isCharacterId,
-} from "@/lib/mongodb/getFavouritesCollection";
+import { getFavouritesCollection } from "@/lib/mongodb/getFavouritesCollection";
 import type { SetFavouriteResult } from "@/types/favourite";
 
 const MAX_CHARACTER_IDS = 100;
 const DUPLICATE_KEY_ERROR = 11000;
+
+const isCharacterId = (value: unknown): value is number =>
+  typeof value === "number" && Number.isSafeInteger(value) && value > 0;
 
 async function getCachedFavouriteIds(
   userId: string,
@@ -33,8 +33,9 @@ async function getCachedFavouriteIds(
   return favourites.map(({ characterId }) => characterId);
 }
 
-// Returns which of the given characters the signed-in user has favourited.
-export async function getFavouriteIds(characterIds: number[]): Promise<number[]> {
+export async function getFavouriteIds(
+  characterIds: number[],
+): Promise<number[]> {
   const session = await getSession();
   if (!session) return [];
 
@@ -50,7 +51,6 @@ export async function getFavouriteIds(characterIds: number[]): Promise<number[]>
   return getCachedFavouriteIds(session.user.id, characterIds);
 }
 
-// Sets the desired state rather than toggling, so retries are idempotent.
 export async function setFavourite(
   characterId: number,
   favourited: boolean,
@@ -79,8 +79,9 @@ export async function setFavourite(
       await collection.deleteOne({ userId, characterId });
     }
   } catch (error) {
-    // Two concurrent upserts can race; the favourite exists either way.
-    if (!(error instanceof MongoServerError && error.code === DUPLICATE_KEY_ERROR)) {
+    if (
+      !(error instanceof MongoServerError && error.code === DUPLICATE_KEY_ERROR)
+    ) {
       console.error("setFavourite failed", error);
       return { ok: false, error: "Could not update favourite." };
     }

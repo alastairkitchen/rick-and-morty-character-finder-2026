@@ -22,6 +22,3 @@ export const getFavouritesCollection = async () => {
   await indexesReady;
   return collection;
 };
-
-export const isCharacterId = (value: unknown): value is number =>
-  typeof value === "number" && Number.isSafeInteger(value) && value > 0;
