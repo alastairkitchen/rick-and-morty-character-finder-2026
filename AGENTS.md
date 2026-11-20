@@ -52,7 +52,7 @@ Set in `.env.local` (never commit it, never print secrets):
 
 ### Data and caching
 
-- Fetch data on the server and pass it to client components. Avoid client-side data fetching.
+- Fetch data on the server and pass it to client components. Avoid client-side data fetching where it is possible and makes the code simpler.
 - Data fetching lives in Server Actions. A `"use server"` file can only export async functions, so keep constants and types in `src/lib` or `src/types`.
 - Cached reads use an internal, non-exported function with `"use cache"`, `cacheLife(...)` and `cacheTag(...)`. Tag names come from `CACHE_TAGS` in `src/lib/cache-tags.ts`.
 - After a mutation, use `updateTag` so the user sees their own write immediately. Use `revalidateTag` only when stale data is acceptable.
@@ -99,7 +99,7 @@ Done:
 To do:
 
 1. **Fuzzy search** on the homepage. Search is combined with pagination, and the query lives in the URL (`?q=`). Use a fuzzy matching library such as Fuse.js.
-2. **Favourites**: favourite and unfavourite button on each character card (signed-in users only). Store favourites in MongoDB keyed by user ID and character ID, with a unique index on that pair. favourites will be saved to the database if a user is logged in, favourites will be saved to local storage if a user is logged out. if a user logs in the local storage data is cleared and favourites from the data base are used as the data source.
+2. **Favourites**: favourite and unfavourite button on each character card. Store favourites in MongoDB keyed by user ID and character ID, with a unique index on that pair. favourites will be saved to the database if a user is logged in, favourites will be saved to local storage if a user is logged out. if a user logs in the local storage data is cleared and favourites from the data base are used as the data source.
 3. **Optimistic updates** for favouriting with `useOptimistic`, rolling back if the action fails.
 4. **Favourites page**: list the user's favourited characters as cards, with batch selection and batch removal.
 5. **Favourite count** on each card showing how many users favourited that character, updated in real time (for example polling or server-sent events). Keep the count query efficient (aggregate or a counter collection).

@@ -1,13 +1,8 @@
+import "server-only";
 import Image from "next/image";
 import { Heart } from "lucide-react";
 
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
 import type { Character, CharacterStatus } from "@/types/character";
