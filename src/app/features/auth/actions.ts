@@ -4,7 +4,7 @@ import { APIError } from "better-auth/api";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 
-import { auth } from "./auth";
+import { auth, isDevelopmentEnvironment } from "./auth";
 import type { AuthFormState } from "./types";
 
 export async function signIn(
@@ -66,7 +66,7 @@ export async function signUp(
   }
 
   try {
-    // Existing emails also return success; no session is created until verification.
+    // Outside development, existing emails also return success; no session is created until verification.
     await auth.api.signUpEmail({
       body: {
         name: name.trim(),
@@ -92,7 +92,8 @@ export async function signUp(
     throw error;
   }
 
-  redirect("/login?verify=sent");
+  // Development sign up creates a session directly.
+  redirect(isDevelopmentEnvironment ? "/" : "/login?verify=sent");
 }
 
 export async function signOut(): Promise<void> {

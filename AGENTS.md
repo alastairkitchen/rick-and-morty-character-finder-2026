@@ -37,6 +37,7 @@ Set in `.env.local` (never commit it, never print secrets):
 
 - `MONGODB_URI` - MongoDB connection string
 - `BETTER_AUTH_SECRET`, `BETTER_AUTH_URL` - Better Auth
+- `ENVIRONMENT` - set to `development` to skip email verification and sign users in on sign up
 - Infobip credentials used by `src/lib/email-client/infobip.ts`
 
 ## Project structure
