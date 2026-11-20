@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 
-import { CharacterCard } from "@/components/CharacterCard";
+import { CharacterCard } from "./CharacterCard";
 import type { Character } from "@/types/character";
 
 const base: Character = {

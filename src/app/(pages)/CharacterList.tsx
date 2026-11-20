@@ -1,6 +1,6 @@
 import { getCharacters, revalidateCharacters } from "@/actions/characters";
-import { CharacterCard } from "@/components/CharacterCard";
-import { CharacterPagination } from "@/components/CharacterPagination";
+import { CharacterCard } from "./CharacterCard";
+import { CharacterPagination } from "./CharacterPagination";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { parsePage } from "@/lib/pagination";
