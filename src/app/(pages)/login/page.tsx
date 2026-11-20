@@ -12,11 +12,11 @@ import {
 } from "@/components/ui/card";
 import { getSession } from "@/lib/session";
 
-async function LoginContent({
+const LoginContent = async ({
   searchParams,
 }: {
   searchParams: PageProps<"/login">["searchParams"];
-}) {
+}) => {
   if (await getSession()) redirect("/");
   const { verify } = await searchParams;
 
@@ -33,9 +33,9 @@ async function LoginContent({
       <LoginForm />
     </div>
   );
-}
+};
 
-export default function LoginPage({ searchParams }: PageProps<"/login">) {
+const LoginPage = ({ searchParams }: PageProps<"/login">) => {
   return (
     <main className="mx-auto flex w-full max-w-md flex-1 items-center px-4 py-12">
       <Card className="w-full">
@@ -62,4 +62,6 @@ export default function LoginPage({ searchParams }: PageProps<"/login">) {
       </Card>
     </main>
   );
-}
+};
+
+export default LoginPage;

@@ -12,12 +12,12 @@ import {
 } from "@/components/ui/card";
 import { getSession } from "@/lib/session";
 
-async function SignUpContent() {
+const SignUpContent = async () => {
   if (await getSession()) redirect("/");
   return <SignUpForm />;
-}
+};
 
-export default function SignUpPage() {
+const SignUpPage = () => {
   return (
     <main className="mx-auto flex w-full max-w-md flex-1 items-center px-4 py-12">
       <Card className="w-full">
@@ -45,4 +45,6 @@ export default function SignUpPage() {
       </Card>
     </main>
   );
-}
+};
+
+export default SignUpPage;

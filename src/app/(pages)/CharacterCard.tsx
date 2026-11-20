@@ -10,7 +10,7 @@ const statusDotClass: Record<CharacterStatus, string> = {
   unknown: "bg-gray-400",
 };
 
-export function CharacterCard({ character }: { character: Character }) {
+export const CharacterCard = ({ character }: { character: Character }) => {
   const { name, status, species, origin, image } = character;
 
   return (
@@ -51,4 +51,4 @@ export function CharacterCard({ character }: { character: Character }) {
       </div>
     </Card>
   );
-}
+};

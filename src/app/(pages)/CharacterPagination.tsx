@@ -16,10 +16,10 @@ interface CharacterPaginationProps {
 
 const pageHref = (page: number) => (page === 1 ? "/" : `/?page=${page}`);
 
-export function CharacterPagination({
+export const CharacterPagination = ({
   currentPage,
   totalPages,
-}: CharacterPaginationProps) {
+}: CharacterPaginationProps) => {
   if (totalPages <= 1) return null;
 
   const pageItems = getPageItems(currentPage, totalPages);
@@ -56,4 +56,4 @@ export function CharacterPagination({
       </PaginationContent>
     </Pagination>
   );
-}
+};

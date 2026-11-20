@@ -6,7 +6,7 @@ import { signOut } from "@/actions/auth";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { getSession } from "@/lib/session";
 
-async function HeaderActions() {
+const HeaderActions = async () => {
   const session = await getSession();
 
   if (!session) {
@@ -35,9 +35,9 @@ async function HeaderActions() {
       </form>
     </div>
   );
-}
+};
 
-export function Header() {
+export const Header = () => {
   return (
     <header className="border-b">
       <div className="mx-auto flex h-14 w-full max-w-7xl items-center justify-between px-4 sm:px-6">
@@ -50,4 +50,4 @@ export function Header() {
       </div>
     </header>
   );
-}
+};

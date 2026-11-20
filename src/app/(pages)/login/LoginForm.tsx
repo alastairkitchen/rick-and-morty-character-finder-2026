@@ -10,7 +10,7 @@ import type { AuthFormState } from "@/types/auth";
 
 const initialState: AuthFormState = {};
 
-export function LoginForm() {
+export const LoginForm = () => {
   const [state, formAction, pending] = useActionState(signIn, initialState);
 
   return (
@@ -45,4 +45,4 @@ export function LoginForm() {
       </Button>
     </form>
   );
-}
+};

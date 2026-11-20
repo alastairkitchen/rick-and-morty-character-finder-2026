@@ -5,7 +5,7 @@ import {
   CharacterListSkeleton,
 } from "./CharacterList";
 
-export default function Home({ searchParams }: PageProps<"/">) {
+const Home = ({ searchParams }: PageProps<"/">) => {
   return (
     <main className="mx-auto w-full max-w-7xl flex-1 px-4 py-8 sm:px-6">
       <header className="mb-8 space-y-2">
@@ -30,4 +30,6 @@ export default function Home({ searchParams }: PageProps<"/">) {
       </Suspense>
     </main>
   );
-}
+};
+
+export default Home;
