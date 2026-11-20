@@ -2,6 +2,7 @@ import { act, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
 import { Filters, SEARCH_DEBOUNCE_MS } from "./Filters";
+import { SearchTransitionProvider } from "./SearchTransitionProvider";
 
 const mockReplace = jest.fn();
 
@@ -11,7 +12,11 @@ jest.mock("next/navigation", () => ({
 
 const setup = (query = "") => {
   const user = userEvent.setup({ advanceTimers: jest.advanceTimersByTime });
-  render(<Filters query={query} />);
+  render(
+    <SearchTransitionProvider>
+      <Filters query={query} />
+    </SearchTransitionProvider>,
+  );
   return { user, input: screen.getByRole("searchbox") };
 };
 
