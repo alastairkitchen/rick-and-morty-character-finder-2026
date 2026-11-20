@@ -3,7 +3,7 @@
 import { cacheLife, cacheTag, updateTag } from "next/cache";
 
 import { CACHE_TAGS } from "@/lib/cache-tags";
-import { parsePage } from "@/lib/pagination";
+import { parsePageNumber } from "@/lib/pagination";
 import type { Character, CharactersPage } from "@/types/character";
 
 const API_URL = "https://rickandmortyapi.com/api";
@@ -18,13 +18,13 @@ export async function getCharacters(page: number): Promise<CharactersPage> {
   cacheLife("hours");
   cacheTag(CACHE_TAGS.characters);
 
-  const parsedPage = parsePage(page);
+  const pageNumber = parsePageNumber(page);
 
-  const response = await fetch(`${API_URL}/character?page=${parsedPage}`);
+  const response = await fetch(`${API_URL}/character?page=${pageNumber}`);
 
   // The API returns 404 when the page has no results.
   if (response.status === 404) {
-    return { characters: [], page: parsedPage, totalPages: 0, totalCount: 0 };
+    return { characters: [], page: pageNumber, totalPages: 0, totalCount: 0 };
   }
   if (!response.ok) {
     throw new Error(`Rick and Morty API responded with ${response.status}`);
@@ -42,7 +42,7 @@ export async function getCharacters(page: number): Promise<CharactersPage> {
         image,
       }),
     ),
-    page: parsedPage,
+    page: pageNumber,
     totalPages: data.info.pages,
     totalCount: data.info.count,
   };

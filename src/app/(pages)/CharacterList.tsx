@@ -3,14 +3,14 @@ import { CharacterCard } from "./CharacterCard";
 import { CharacterPagination } from "./CharacterPagination";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-import { parsePage } from "@/lib/pagination";
+import { parsePageNumber } from "@/lib/pagination";
 
 interface CharacterListProps {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 }
 
 export const CharacterList = async ({ searchParams }: CharacterListProps) => {
-  const page = parsePage((await searchParams).page);
+  const page = parsePageNumber((await searchParams).page);
   const { characters, totalPages } = await getCharacters(page);
 
   if (characters.length === 0) {

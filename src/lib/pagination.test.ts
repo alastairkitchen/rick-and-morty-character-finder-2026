@@ -1,6 +1,6 @@
-import { getPageItems, parsePage } from "@/lib/pagination";
+import { getPageItems, parsePageNumber } from "@/lib/pagination";
 
-describe("parsePage", () => {
+describe("parsePageNumber", () => {
   it.each([
     ["3", 3],
     [["4", "5"], 4],
@@ -11,7 +11,7 @@ describe("parsePage", () => {
     [undefined, 1],
     [null, 1],
   ])("parses %p as %p", (input, expected) => {
-    expect(parsePage(input)).toBe(expected);
+    expect(parsePageNumber(input)).toBe(expected);
   });
 });
 

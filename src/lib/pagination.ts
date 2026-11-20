@@ -1,6 +1,6 @@
 export type PageItem = number | "ellipsis-start" | "ellipsis-end";
 
-export function parsePage(
+export function parsePageNumber(
   value: string | string[] | number | null | undefined,
 ): number {
   const raw = Array.isArray(value) ? value[0] : value;
