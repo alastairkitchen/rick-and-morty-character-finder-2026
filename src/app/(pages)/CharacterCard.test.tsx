@@ -3,6 +3,8 @@ import { render, screen } from "@testing-library/react";
 import { CharacterCard } from "./CharacterCard";
 import type { Character } from "@/types/character";
 
+jest.mock("@/actions/favourites", () => ({ setFavourite: jest.fn() }));
+
 const base: Character = {
   id: 1,
   name: "Rick Sanchez",
@@ -34,5 +36,17 @@ describe("CharacterCard", () => {
     render(<CharacterCard character={{ ...base, status: "Dead" }} />);
     expect(screen.getByTestId("status-dot")).toHaveClass("bg-red-500");
     expect(screen.getByText("Dead")).toBeInTheDocument();
+  });
+
+  it("hides the favourite button when signed out", () => {
+    render(<CharacterCard character={base} />);
+    expect(screen.queryByRole("button")).not.toBeInTheDocument();
+  });
+
+  it("shows the favourite button when signed in", () => {
+    render(<CharacterCard character={base} favourited />);
+    expect(
+      screen.getByRole("button", { name: "Remove Rick Sanchez from favourites" }),
+    ).toHaveAttribute("aria-pressed", "true");
   });
 });

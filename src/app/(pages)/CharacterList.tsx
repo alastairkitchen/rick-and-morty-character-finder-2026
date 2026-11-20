@@ -1,4 +1,6 @@
 import { getCharacters, revalidateCharacters } from "@/actions/characters";
+import { getFavouriteIds } from "@/actions/favourites";
+import { getSession } from "@/lib/auth/session";
 import { CharacterCard } from "./CharacterCard";
 import { CharacterPagination } from "./CharacterPagination";
 import { Button } from "@/components/ui/button";
@@ -11,7 +13,13 @@ interface CharacterListProps {
 
 export const CharacterList = async ({ searchParams }: CharacterListProps) => {
   const page = parsePageNumber((await searchParams).page);
-  const { characters, totalPages } = await getCharacters(page);
+  const [{ characters, totalPages }, session] = await Promise.all([
+    getCharacters(page),
+    getSession(),
+  ]);
+  const favouriteIds = new Set(
+    session ? await getFavouriteIds(characters.map(({ id }) => id)) : [],
+  );
 
   if (characters.length === 0) {
     return (
@@ -31,7 +39,10 @@ export const CharacterList = async ({ searchParams }: CharacterListProps) => {
       <ul className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
         {characters.map((character) => (
           <li key={character.id}>
-            <CharacterCard character={character} />
+            <CharacterCard
+              character={character}
+              favourited={session ? favouriteIds.has(character.id) : undefined}
+            />
           </li>
         ))}
       </ul>

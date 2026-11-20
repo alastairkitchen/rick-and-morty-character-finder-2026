@@ -1,9 +1,7 @@
 import "server-only";
 import Image from "next/image";
-import { Heart } from "lucide-react";
-
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { FavouriteButton } from "./FavouriteButton";
 
 import type { Character, CharacterStatus } from "@/types/character";
 import { cn } from "@/lib/utils";
@@ -14,8 +12,14 @@ const statusDotClass: Record<CharacterStatus, string> = {
   unknown: "bg-gray-400",
 };
 
-export const CharacterCard = ({ character }: { character: Character }) => {
-  const { name, status, species, origin, image } = character;
+interface CharacterCardProps {
+  character: Character;
+  // Undefined when signed out; the favourite button is then hidden.
+  favourited?: boolean;
+}
+
+export const CharacterCard = ({ character, favourited }: CharacterCardProps) => {
+  const { id, name, status, species, origin, image } = character;
 
   return (
     <Card className="h-full flex-row gap-0 py-0">
@@ -51,11 +55,13 @@ export const CharacterCard = ({ character }: { character: Character }) => {
             <p className="text-muted-foreground">Origin</p>
             <p>{origin.name}</p>
           </div>
-          <Button variant="outline">
-            <span title="add to favourite">
-              <Heart />
-            </span>
-          </Button>
+          {favourited !== undefined && (
+            <FavouriteButton
+              characterId={id}
+              characterName={name}
+              favourited={favourited}
+            />
+          )}
         </CardContent>
       </div>
     </Card>
