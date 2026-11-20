@@ -3,10 +3,10 @@
 import { MongoServerError } from "mongodb";
 import { cacheLife, cacheTag, updateTag } from "next/cache";
 
-import { getSession } from "@/lib/auth/session";
+import { getSession } from "@/app/features/auth/session";
 import { CACHE_TAGS } from "@/lib/cache-tags";
-import { getFavouritesCollection } from "@/lib/mongodb/getFavouritesCollection";
-import type { SetFavouriteResult } from "@/types/favourite";
+import { getFavouritesCollection } from "./getFavouritesCollection";
+import type { SetFavouriteResult } from "./types";
 
 const MAX_CHARACTER_IDS = 100;
 const DUPLICATE_KEY_ERROR = 11000;

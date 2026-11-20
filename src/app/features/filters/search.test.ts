@@ -2,8 +2,8 @@ import {
   getHomeHref,
   normaliseQuery,
   searchCharactersByName,
-} from "@/lib/search";
-import type { Character } from "@/types/character";
+} from "./search";
+import type { Character } from "@/app/features/characters/types";
 
 const character = (id: number, name: string): Character => ({
   id,

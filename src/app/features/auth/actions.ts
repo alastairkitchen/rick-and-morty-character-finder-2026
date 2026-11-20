@@ -4,8 +4,8 @@ import { APIError } from "better-auth/api";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 
-import { auth } from "@/lib/auth/auth";
-import type { AuthFormState } from "@/types/auth";
+import { auth } from "./auth";
+import type { AuthFormState } from "./types";
 
 export async function signIn(
   _previousState: AuthFormState,

@@ -1,15 +1,15 @@
-import { getCharacters, revalidateCharacters } from "@/actions/characters";
-import { getFavouriteIds } from "@/actions/favourites";
-import { getSession } from "@/lib/auth/session";
+import { getCharacters, revalidateCharacters } from "./actions";
+import { getFavouriteIds } from "@/app/features/favourites/actions";
+import { getSession } from "@/app/features/auth/session";
 import { CharacterCard } from "./CharacterCard";
-import { CharacterPagination } from "./CharacterPagination";
-import { Filters } from "./Filters";
-import { SearchResults } from "./SearchResults";
-import { SearchTransitionProvider } from "./SearchTransitionProvider";
+import { CharacterPagination } from "@/app/features/pagination/CharacterPagination";
+import { Filters } from "@/app/features/filters/Filters";
+import { SearchResults } from "@/app/features/filters/SearchResults";
+import { SearchTransitionProvider } from "@/app/features/filters/SearchTransitionProvider";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-import { parsePageNumber } from "@/lib/pagination";
-import { normaliseQuery } from "@/lib/search";
+import { parsePageNumber } from "@/app/features/pagination/pagination";
+import { normaliseQuery } from "@/app/features/filters/search";
 
 interface CharacterListProps {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
@@ -32,11 +32,6 @@ export const CharacterList = async ({ searchParams }: CharacterListProps) => {
       <div className="space-y-4">
         <div className="flex items-start justify-between gap-4">
           <Filters query={query} />
-          <form action={revalidateCharacters}>
-            <Button type="submit" variant="outline" size="sm">
-              Refresh characters
-            </Button>
-          </form>
         </div>
         <SearchResults>
           {characters.length === 0 ? (

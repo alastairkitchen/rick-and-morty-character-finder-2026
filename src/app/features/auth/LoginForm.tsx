@@ -2,23 +2,19 @@
 
 import { useActionState } from "react";
 
-import { signUp } from "@/actions/auth";
+import { signIn } from "./actions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import type { AuthFormState } from "@/types/auth";
+import type { AuthFormState } from "./types";
 
 const initialState: AuthFormState = {};
 
-export const SignUpForm = () => {
-  const [state, formAction, pending] = useActionState(signUp, initialState);
+export const LoginForm = () => {
+  const [state, formAction, pending] = useActionState(signIn, initialState);
 
   return (
     <form action={formAction} className="space-y-4">
-      <div className="space-y-2">
-        <Label htmlFor="name">Name</Label>
-        <Input id="name" name="name" autoComplete="name" required />
-      </div>
       <div className="space-y-2">
         <Label htmlFor="email">Email</Label>
         <Input
@@ -35,8 +31,7 @@ export const SignUpForm = () => {
           id="password"
           name="password"
           type="password"
-          autoComplete="new-password"
-          minLength={8}
+          autoComplete="current-password"
           required
         />
       </div>
@@ -46,7 +41,7 @@ export const SignUpForm = () => {
         </p>
       )}
       <Button type="submit" className="w-full" disabled={pending}>
-        {pending ? "Creating account..." : "Sign up"}
+        {pending ? "Signing in..." : "Sign in"}
       </Button>
     </form>
   );

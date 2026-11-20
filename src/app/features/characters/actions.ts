@@ -3,9 +3,9 @@
 import { cacheLife, cacheTag, updateTag } from "next/cache";
 
 import { CACHE_TAGS } from "@/lib/cache-tags";
-import { PAGE_SIZE, parsePageNumber } from "@/lib/pagination";
-import { normaliseQuery, searchCharactersByName } from "@/lib/search";
-import type { Character, CharactersPage } from "@/types/character";
+import { PAGE_SIZE, parsePageNumber } from "@/app/features/pagination/pagination";
+import { normaliseQuery, searchCharactersByName } from "@/app/features/filters/search";
+import type { Character, CharactersPage } from "./types";
 
 const API_URL = "https://rickandmortyapi.com/api";
 

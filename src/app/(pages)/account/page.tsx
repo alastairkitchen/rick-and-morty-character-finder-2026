@@ -9,7 +9,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
-import { getSession } from "@/lib/auth/session";
+import { getSession } from "@/app/features/auth/session";
 
 const AccountDetails = async () => {
   const session = await getSession();

@@ -1,6 +1,6 @@
 import Fuse from "fuse.js";
 
-import type { Character } from "@/types/character";
+import type { Character } from "@/app/features/characters/types";
 
 export const MAX_QUERY_LENGTH = 50;
 

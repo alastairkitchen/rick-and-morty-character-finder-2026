@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import { Input } from "@/components/ui/input";
-import { getHomeHref, normaliseQuery } from "@/lib/search";
+import { getHomeHref, normaliseQuery } from "./search";
 
 import { useSearchTransition } from "./SearchTransitionProvider";
 

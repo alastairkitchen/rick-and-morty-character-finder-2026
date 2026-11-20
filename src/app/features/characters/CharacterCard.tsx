@@ -1,9 +1,9 @@
 import "server-only";
 import Image from "next/image";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { FavouriteButton } from "./FavouriteButton";
+import { FavouriteButton } from "@/app/features/favourites/FavouriteButton";
 
-import type { Character, CharacterStatus } from "@/types/character";
+import type { Character, CharacterStatus } from "./types";
 import { cn } from "@/lib/utils";
 
 const statusDotClass: Record<CharacterStatus, string> = {

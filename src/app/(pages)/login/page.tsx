@@ -2,7 +2,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
 
-import { LoginForm } from "./LoginForm";
+import { LoginForm } from "@/app/features/auth/LoginForm";
 import {
   Card,
   CardContent,
@@ -10,7 +10,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { getSession } from "@/lib/auth/session";
+import { getSession } from "@/app/features/auth/session";
 
 const LoginContent = async ({
   searchParams,

@@ -7,8 +7,8 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
-import { getPageItems } from "@/lib/pagination";
-import { getHomeHref } from "@/lib/search";
+import { getPageItems } from "./pagination";
+import { getHomeHref } from "@/app/features/filters/search";
 
 interface CharacterPaginationProps {
   currentPage: number;

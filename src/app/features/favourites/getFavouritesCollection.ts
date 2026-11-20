@@ -1,7 +1,7 @@
 import "server-only";
 
 import { db } from "@/lib/mongodb/mongodb";
-import type { CharacterFavourite } from "@/types/favourite";
+import type { CharacterFavourite } from "./types";
 
 export const FAVOURITES_COLLECTION = "characterFavourite";
 

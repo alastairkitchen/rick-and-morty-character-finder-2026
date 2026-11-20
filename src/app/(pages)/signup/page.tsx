@@ -2,7 +2,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
 
-import { SignUpForm } from "./SignUpForm";
+import { SignUpForm } from "@/app/features/auth/SignUpForm";
 import {
   Card,
   CardContent,
@@ -10,7 +10,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { getSession } from "@/lib/auth/session";
+import { getSession } from "@/app/features/auth/session";
 
 const SignUpContent = async () => {
   if (await getSession()) redirect("/");

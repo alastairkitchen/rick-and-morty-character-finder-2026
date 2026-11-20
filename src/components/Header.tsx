@@ -2,10 +2,10 @@ import { LogIn, LogOut, User } from "lucide-react";
 import Link from "next/link";
 import { Suspense } from "react";
 
-import { signOut } from "@/actions/auth";
+import { signOut } from "@/app/features/auth/actions";
 import { Button, buttonVariants } from "@/components/ui/button";
-import { ModeToggle } from "@/components/ModeToggle";
-import { getSession } from "@/lib/auth/session";
+import { ModeToggle } from "@/app/features/theme/ModeToggle";
+import { getSession } from "@/app/features/auth/session";
 
 const HeaderActions = async () => {
   const session = await getSession();

@@ -1,11 +1,11 @@
 import { act, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
-import { setFavourite } from "@/actions/favourites";
-import type { SetFavouriteResult } from "@/types/favourite";
+import { setFavourite } from "./actions";
+import type { SetFavouriteResult } from "./types";
 import { FavouriteButton } from "./FavouriteButton";
 
-jest.mock("@/actions/favourites", () => ({ setFavourite: jest.fn() }));
+jest.mock("./actions", () => ({ setFavourite: jest.fn() }));
 
 const mockSetFavourite = setFavourite as jest.MockedFunction<
   typeof setFavourite

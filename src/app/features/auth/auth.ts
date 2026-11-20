@@ -3,7 +3,7 @@ import { betterAuth } from "better-auth";
 import { nextCookies } from "better-auth/next-js";
 
 import { db } from "@/lib/mongodb/mongodb";
-import { sendVerificationEmail } from "@/lib/email-client/verification-email";
+import { sendVerificationEmail } from "./verification-email";
 
 export const auth = betterAuth({
   database: mongodbAdapter(db),

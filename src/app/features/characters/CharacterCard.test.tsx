@@ -1,9 +1,9 @@
 import { render, screen } from "@testing-library/react";
 
 import { CharacterCard } from "./CharacterCard";
-import type { Character } from "@/types/character";
+import type { Character } from "./types";
 
-jest.mock("@/actions/favourites", () => ({ setFavourite: jest.fn() }));
+jest.mock("@/app/features/favourites/actions", () => ({ setFavourite: jest.fn() }));
 
 const base: Character = {
   id: 1,

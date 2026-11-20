@@ -3,7 +3,7 @@
 import { Heart } from "lucide-react";
 import { useOptimistic, useState, useTransition } from "react";
 
-import { setFavourite } from "@/actions/favourites";
+import { setFavourite } from "./actions";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
@@ -51,10 +51,10 @@ export const FavouriteButton = ({
         title={label}
         disabled={isPending}
         onClick={handleClick}
-        className={cn(
+        className={`cursor-pointer ${cn(
           optimisticFavourited &&
             "border-red-500 bg-red-500 text-white hover:bg-red-600 hover:text-white dark:border-red-500 dark:bg-red-500 dark:hover:bg-red-600",
-        )}
+        )}`}
       >
         <Heart aria-hidden />
       </Button>

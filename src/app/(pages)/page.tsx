@@ -3,7 +3,7 @@ import { Suspense } from "react";
 import {
   CharacterList,
   CharacterListSkeleton,
-} from "./CharacterList";
+} from "@/app/features/characters/CharacterList";
 
 const Home = ({ searchParams }: PageProps<"/">) => {
   return (

@@ -17,7 +17,7 @@ A Next.js app for browsing Rick and Morty characters, with email-password authen
 - Next.js (App Router, `cacheComponents` enabled), React 19, TypeScript, Tailwind CSS 4
 - shadcn/ui (`base-nova` style, Base UI primitives) in `src/components/ui`
 - Better Auth with the MongoDB adapter (`@better-auth/mongo-adapter`), database name `rick-and-morty`
-- Email verification emails are sent through Infobip (`src/lib/infobip.ts`, `src/lib/verification-email.ts`)
+- Email verification emails are sent through Infobip (`src/lib/email-client/infobip.ts`, `src/app/features/auth/verification-email.ts`)
 - Jest and React Testing Library for unit tests, ESLint for linting
 
 ## Commands
@@ -37,15 +37,21 @@ Set in `.env.local` (never commit it, never print secrets):
 
 - `MONGODB_URI` - MongoDB connection string
 - `BETTER_AUTH_SECRET`, `BETTER_AUTH_URL` - Better Auth
-- Infobip credentials used by `src/lib/infobip.ts`
+- Infobip credentials used by `src/lib/email-client/infobip.ts`
 
 ## Project structure
 
 - `src/app` - routes. `(pages)` group holds the pages: home, `login`, `signup`, `account`. `api/characters` and `api/auth/[...all]` are route handlers.
-- `src/actions` - Server Actions, one file per domain (`characters.ts`, `auth.ts`). Add new domains here, for example `favourites.ts`.
-- `src/components` - app components in PascalCase files that match the exported component name (`CharacterCard.tsx`). `ui/` holds shadcn components and keeps shadcn's lowercase filenames.
-- `src/lib` - server and shared helpers: `auth.ts`, `mongodb.ts`, `session.ts`, `pagination.ts`, `cache-tags.ts`.
-- `src/types` - shared TypeScript types.
+- `src/app/features` - one folder per feature. Each folder co-locates the feature's components, tests, Server Actions (`actions.ts`), types (`types.ts`) and helpers. The folders hold no `page.tsx` or `route.ts`, so they are not routes. Pages and route handlers import from them.
+  - `auth` - `LoginForm`, `SignUpForm`, sign in/up/out actions, Better Auth config (`auth.ts`), `session.ts`, verification email.
+  - `characters` - `CharacterCard`, `CharacterList`, `getCharacters` actions, `Character` types.
+  - `favourites` - `FavouriteButton`, favourite actions, `getFavouritesCollection`, favourite types.
+  - `filters` - `Filters` search input, `SearchResults`, `SearchTransitionProvider`, fuzzy search helpers (`search.ts`).
+  - `pagination` - `CharacterPagination` and pagination helpers (`pagination.ts`).
+  - `theme` - `ModeToggle` and `ThemeProvider`.
+  - Add each new feature as a new folder. Use relative imports inside a feature and `@/app/features/<feature>/...` across features.
+- `src/components` - shared app components used outside a single feature (`Header.tsx`). Files are PascalCase and match the exported component name. `ui/` holds shadcn components and keeps shadcn's lowercase filenames.
+- `src/lib` - shared infrastructure: `mongodb/mongodb.ts`, `email-client/infobip.ts`, `cache-tags.ts`, `utils.ts`.
 - `scripts` - one-off scripts such as the user seed.
 
 ## Conventions
@@ -53,7 +59,7 @@ Set in `.env.local` (never commit it, never print secrets):
 ### Data and caching
 
 - Fetch data on the server and pass it to client components. Avoid client-side data fetching where it is possible and makes the code simpler.
-- Data fetching lives in Server Actions. A `"use server"` file can only export async functions, so keep constants and types in `src/lib` or `src/types`.
+- Data fetching lives in Server Actions. A `"use server"` file can only export async functions, so keep constants and types in a separate file in the feature folder (for example `types.ts`).
 - Cached reads use an internal, non-exported function with `"use cache"`, `cacheLife(...)` and `cacheTag(...)`. Tag names come from `CACHE_TAGS` in `src/lib/cache-tags.ts`.
 - After a mutation, use `updateTag` so the user sees their own write immediately. Use `revalidateTag` only when stale data is acceptable.
 - With Cache Components, anything that reads runtime data (`headers()`, `cookies()`, `searchParams`, uncached fetches) must sit inside a `<Suspense>` boundary. Keep the static shell outside it.
@@ -63,15 +69,15 @@ Set in `.env.local` (never commit it, never print secrets):
 
 Every action is a public POST endpoint. In each action:
 
-- Get the user from `getSession()` in `src/lib/session.ts` and reject unauthenticated calls for anything user specific.
+- Get the user from `getSession()` in `src/app/features/auth/session.ts` and reject unauthenticated calls for anything user specific.
 - Never trust identity or ownership from the client. Take only an ID plus the change, derive the user from the session, and look up rows by owner.
 - Validate all inputs (`FormData`, numbers, IDs) and return only the data the UI needs.
 - Use generic error messages for auth failures so accounts cannot be enumerated.
 
 ### Authentication
 
-- Better Auth is configured in `src/lib/auth.ts` with email and password, required email verification, and the `nextCookies()` plugin as the last plugin.
-- Sign in and sign out are Server Actions in `src/actions/auth.ts`. The header shows sign in, or the account icon and sign out button, based on the session.
+- Better Auth is configured in `src/app/features/auth/auth.ts` with email and password, required email verification, and the `nextCookies()` plugin as the last plugin.
+- Sign in and sign out are Server Actions in `src/app/features/auth/actions.ts`. The header shows sign in, or the account icon and sign out button, based on the session.
 - Protect pages by checking the session in the page (not only in a proxy) and redirecting to `/login`.
 
 ### UI

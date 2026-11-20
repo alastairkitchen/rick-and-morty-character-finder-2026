@@ -1,4 +1,4 @@
-import { getPageItems, parsePageNumber } from "@/lib/pagination";
+import { getPageItems, parsePageNumber } from "./pagination";
 
 describe("parsePageNumber", () => {
   it.each([

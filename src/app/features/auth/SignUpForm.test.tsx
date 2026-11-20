@@ -1,10 +1,10 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
-import { signUp } from "@/actions/auth";
+import { signUp } from "./actions";
 import { SignUpForm } from "./SignUpForm";
 
-jest.mock("@/actions/auth", () => ({ signUp: jest.fn() }));
+jest.mock("./actions", () => ({ signUp: jest.fn() }));
 
 const mockSignUp = signUp as jest.Mock;
 
