@@ -10,10 +10,13 @@ import {
 } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { getSession } from "@/app/features/auth/session";
+import { getFavouriteIdCount } from "@/app/features/favourites/actions";
 
 const AccountDetails = async () => {
   const session = await getSession();
   if (!session) redirect("/login");
+
+  const favourites = await getFavouriteIdCount(session.user.id);
 
   const { name, email, createdAt } = session.user;
 
@@ -34,6 +37,10 @@ const AccountDetails = async () => {
             new Date(createdAt),
           )}
         </dd>
+      </div>
+      <div>
+        <dt className="text-muted-foreground">Favourited characters</dt>
+        <dd>{favourites.length}</dd>
       </div>
     </dl>
   );

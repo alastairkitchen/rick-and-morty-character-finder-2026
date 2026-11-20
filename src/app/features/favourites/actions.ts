@@ -51,6 +51,15 @@ export async function getFavouriteIds(
   return getCachedFavouriteIds(session.user.id, characterIds);
 }
 
+export async function getFavouriteIdCount(userId: string): Promise<number[]> {
+  const collection = await getFavouritesCollection();
+  const favourites = await collection
+    .find({ userId }, { projection: { _id: 0, characterId: 1 } })
+    .toArray();
+
+  return favourites.map(({ characterId }) => characterId);
+}
+
 export async function setFavourite(
   characterId: number,
   favourited: boolean,

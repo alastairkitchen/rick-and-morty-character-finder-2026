@@ -6,7 +6,6 @@ import { CharacterPagination } from "@/app/features/pagination/CharacterPaginati
 import { Filters } from "@/app/features/filters/Filters";
 import { SearchResults } from "@/app/features/filters/SearchResults";
 import { SearchTransitionProvider } from "@/app/features/filters/SearchTransitionProvider";
-import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { parsePageNumber } from "@/app/features/pagination/pagination";
 import { normaliseQuery } from "@/app/features/filters/search";
