@@ -10,7 +10,8 @@
     "typecheck": "tsc --noEmit",
     "test": "jest",
     "test:watch": "jest --watch",
-    "seed:user": "tsx --env-file=.env.local scripts/seed-user.ts"
+    "seed:user": "tsx --env-file=.env.local scripts/seed-user.ts",
+    "seed:characters": "tsx --env-file=.env.local scripts/seed-characters.ts"
   },
   "dependencies": {
     "@base-ui/react": "^1.9.0",
