@@ -1,34 +1,35 @@
 "use server";
 
-import { cacheLife, cacheTag, updateTag } from "next/cache";
+import { cacheLife, cacheTag } from "next/cache";
 
 import { CACHE_TAGS } from "@/lib/cache-tags";
-import {
-  PAGE_SIZE,
-  parsePageNumber,
-} from "@/app/features/pagination/pagination";
-import {
-  normaliseQuery,
-  searchCharactersByName,
-} from "@/app/features/filters/search";
-import type { Character, CharactersPage } from "./types";
+import { PAGE_SIZE, parsePageNumber } from "../pagination/pagination";
+import { normaliseQuery, searchCharactersByName } from "../filters/search";
+import { getCharactersCollection } from "./getCharactersCollection";
+import type { Character, CharacterDocument, CharactersPage } from "./types";
 
-const API_URL = "https://rickandmortyapi.com/api";
+const CARD_PROJECTION = {
+  name: 1,
+  status: 1,
+  species: 1,
+  "origin.name": 1,
+  image: 1,
+} as const;
 
-interface ApiResponse {
-  info: { count: number; pages: number };
-  results: Character[];
-}
+type CardDocument = Pick<
+  CharacterDocument,
+  "_id" | "name" | "status" | "species" | "image"
+> & { origin: { name: string } };
 
 const toCharacter = ({
-  id,
+  _id,
   name,
   status,
   species,
   origin,
   image,
-}: Character): Character => ({
-  id,
+}: CardDocument): Character => ({
+  id: _id,
   name,
   status,
   species,
@@ -36,57 +37,48 @@ const toCharacter = ({
   image,
 });
 
-// The API returns 404 when the page has no results.
-const fetchApiPage = async (page: number): Promise<ApiResponse | null> => {
-  const response = await fetch(`${API_URL}/character?page=${page}`);
-
-  if (response.status === 404) return null;
-  if (!response.ok) {
-    throw new Error(`Rick and Morty API responded with ${response.status}`);
-  }
-  return response.json();
-};
-
-async function fetchCharactersPage(page: number): Promise<CharactersPage> {
+async function getCharactersFromDb(page: number): Promise<CharactersPage> {
   "use cache";
   cacheLife("hours");
   cacheTag(CACHE_TAGS.characters);
 
-  const data = await fetchApiPage(page);
-  if (!data) return { characters: [], page, totalPages: 0, totalCount: 0 };
+  const collection = getCharactersCollection();
+  const [documents, totalCount] = await Promise.all([
+    collection
+      .find({}, { projection: CARD_PROJECTION })
+      .sort({ _id: 1 })
+      .skip((page - 1) * PAGE_SIZE)
+      .limit(PAGE_SIZE)
+      .toArray(),
+    collection.countDocuments(),
+  ]);
 
   return {
-    characters: data.results.map(toCharacter),
+    characters: (documents as CardDocument[]).map(toCharacter),
     page,
-    totalPages: data.info.pages,
-    totalCount: data.info.count,
+    totalPages: Math.ceil(totalCount / PAGE_SIZE),
+    totalCount,
   };
 }
 
-async function fetchAllCharacters(): Promise<Character[]> {
+async function getAllCharactersFromDb(): Promise<Character[]> {
   "use cache";
   cacheLife("hours");
   cacheTag(CACHE_TAGS.characters);
 
-  const first = await fetchApiPage(1);
-  if (!first) return [];
+  const documents = await getCharactersCollection()
+    .find({}, { projection: CARD_PROJECTION })
+    .sort({ _id: 1 })
+    .toArray();
 
-  const rest = await Promise.all(
-    Array.from({ length: first.info.pages - 1 }, (_, index) =>
-      fetchApiPage(index + 2),
-    ),
-  );
-
-  return [first, ...rest].flatMap(
-    (data) => data?.results.map(toCharacter) ?? [],
-  );
+  return (documents as CardDocument[]).map(toCharacter);
 }
 
-async function searchCharactersPage(
+async function searchCharactersByPage(
   query: string,
   page: number,
 ): Promise<CharactersPage> {
-  const matches = searchCharactersByName(await fetchAllCharacters(), query);
+  const matches = searchCharactersByName(await getAllCharactersFromDb(), query);
   const start = (page - 1) * PAGE_SIZE;
 
   return {
@@ -105,11 +97,6 @@ export async function getCharacters(
   const normalisedQuery = normaliseQuery(query);
 
   return normalisedQuery
-    ? searchCharactersPage(normalisedQuery, pageNumber)
-    : fetchCharactersPage(pageNumber);
-}
-
-export async function revalidateCharacters(): Promise<void> {
-  // updateTag expires immediately so the re-rendered route reads fresh data.
-  updateTag(CACHE_TAGS.characters);
+    ? searchCharactersByPage(normalisedQuery, pageNumber)
+    : getCharactersFromDb(pageNumber);
 }

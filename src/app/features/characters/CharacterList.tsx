@@ -1,4 +1,3 @@
-import { getCharacters } from "./actions";
 import { getFavouriteIds } from "@/app/features/favourites/actions";
 import { getSession } from "@/app/features/auth/session";
 import { CharacterCard } from "./CharacterCard";
@@ -9,7 +8,7 @@ import { SearchTransitionProvider } from "@/app/features/filters/SearchTransitio
 import { Skeleton } from "@/components/ui/skeleton";
 import { parsePageNumber } from "@/app/features/pagination/pagination";
 import { normaliseQuery } from "@/app/features/filters/search";
-import { getAllCharacters, getTotalPages } from "./actions-new";
+import { getCharacters } from "./actions";
 
 interface CharacterListProps {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
@@ -19,13 +18,10 @@ export const CharacterList = async ({ searchParams }: CharacterListProps) => {
   const params = await searchParams;
   const page = parsePageNumber(params.page);
   const query = normaliseQuery(params.q);
-  const [session] = await Promise.all([
-    // getCharacters(page, query),
+  const [{ characters, totalPages }, session] = await Promise.all([
+    getCharacters(page, query),
     getSession(),
   ]);
-
-  const characters = await getAllCharacters(page);
-  const totalPages = await getTotalPages();
 
   const favouriteIds = new Set(
     session ? await getFavouriteIds(characters.map(({ id }) => id)) : [],
