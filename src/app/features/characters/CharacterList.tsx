@@ -9,6 +9,7 @@ import { SearchTransitionProvider } from "@/app/features/filters/SearchTransitio
 import { Skeleton } from "@/components/ui/skeleton";
 import { parsePageNumber } from "@/app/features/pagination/pagination";
 import { normaliseQuery } from "@/app/features/filters/search";
+import { getAllCharacters, getTotalPages } from "./actions-new";
 
 interface CharacterListProps {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
@@ -18,10 +19,14 @@ export const CharacterList = async ({ searchParams }: CharacterListProps) => {
   const params = await searchParams;
   const page = parsePageNumber(params.page);
   const query = normaliseQuery(params.q);
-  const [{ characters, totalPages }, session] = await Promise.all([
-    getCharacters(page, query),
+  const [session] = await Promise.all([
+    // getCharacters(page, query),
     getSession(),
   ]);
+
+  const characters = await getAllCharacters(page);
+  const totalPages = await getTotalPages();
+
   const favouriteIds = new Set(
     session ? await getFavouriteIds(characters.map(({ id }) => id)) : [],
   );

@@ -14,11 +14,13 @@ const statusDotClass: Record<CharacterStatus, string> = {
 
 interface CharacterCardProps {
   character: Character;
-  // Undefined when signed out; the favourite button is then hidden.
   favourited?: boolean;
 }
 
-export const CharacterCard = ({ character, favourited }: CharacterCardProps) => {
+export const CharacterCard = async ({
+  character,
+  favourited,
+}: CharacterCardProps) => {
   const { id, name, status, species, origin, image } = character;
 
   return (
