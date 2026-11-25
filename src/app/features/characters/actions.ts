@@ -37,7 +37,7 @@ const toCharacter = ({
   image,
 });
 
-async function getCharactersFromDb(page: number): Promise<CharactersPage> {
+async function getCharactersByPage(page: number): Promise<CharactersPage> {
   "use cache";
   cacheLife("hours");
   cacheTag(CACHE_TAGS.characters);
@@ -98,5 +98,5 @@ export async function getCharacters(
 
   return normalisedQuery
     ? searchCharactersByPage(normalisedQuery, pageNumber)
-    : getCharactersFromDb(pageNumber);
+    : getCharactersByPage(pageNumber);
 }

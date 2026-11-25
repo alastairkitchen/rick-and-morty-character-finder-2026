@@ -10,7 +10,7 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 # Rick and Morty Character Finder
 
-A Next.js app for browsing Rick and Morty characters, with email-password authentication and a favourites feature. Data comes from https://rickandmortyapi.com/. Users and favourites are stored in MongoDB.
+A Next.js app for browsing Rick and Morty characters, with email-password authentication and a favourites feature. Character and location data is stored in MongoDB (`characters` and `locations` collections), seeded once from https://rickandmortyapi.com/ with `npm run seed:characters`. The app does not call the API at runtime. Character images are not stored: each character keeps the image URL, and the files are hosted on https://rickandmortyapi.com/. Users and favourites are stored in MongoDB too.
 
 ## Stack
 
@@ -28,6 +28,7 @@ A Next.js app for browsing Rick and Morty characters, with email-password authen
 - `npm run lint` - ESLint
 - `npm test` - Jest
 - `npm run seed:user` - create the local test user `user1@test.com`
+- `npm run seed:characters` - fetch all characters and locations from rickandmortyapi.com and upsert them into MongoDB (safe to re-run)
 
 Run typecheck, lint and tests before finishing a change.
 
@@ -42,10 +43,10 @@ Set in `.env.local` (never commit it, never print secrets):
 
 ## Project structure
 
-- `src/app` - routes. `(pages)` group holds the pages: home, `login`, `signup`, `account`. `api/characters` and `api/auth/[...all]` are route handlers.
+- `src/app` - routes. `(pages)` group holds the pages: home, `login`, `signup`, `account`. `api/auth/[...all]` is a route handler.
 - `src/app/features` - one folder per feature. Each folder co-locates the feature's components, tests, Server Actions (`actions.ts`), types (`types.ts`) and helpers. The folders hold no `page.tsx` or `route.ts`, so they are not routes. Pages and route handlers import from them.
   - `auth` - `LoginForm`, `SignUpForm`, sign in/up/out actions, Better Auth config (`auth.ts`), `session.ts`, verification email.
-  - `characters` - `CharacterCard`, `CharacterList`, `getCharacters` actions, `Character` types.
+  - `characters` - `CharacterCard`, `CharacterList`, `getCharacters` actions (read from MongoDB), `getCharactersCollection`, `Character` and document types.
   - `favourites` - `FavouriteButton`, favourite actions, `getFavouritesCollection`, favourite types.
   - `filters` - `Filters` search input, `SearchResults`, `SearchTransitionProvider`, fuzzy search helpers (`search.ts`).
   - `pagination` - `CharacterPagination` and pagination helpers (`pagination.ts`).
@@ -53,7 +54,7 @@ Set in `.env.local` (never commit it, never print secrets):
   - Add each new feature as a new folder. Use relative imports inside a feature and `@/app/features/<feature>/...` across features.
 - `src/components` - shared app components used outside a single feature (`Header.tsx`). Files are PascalCase and match the exported component name. `ui/` holds shadcn components and keeps shadcn's lowercase filenames.
 - `src/lib` - shared infrastructure: `mongodb/mongodb.ts`, `email-client/infobip.ts`, `cache-tags.ts`, `utils.ts`.
-- `scripts` - one-off scripts such as the user seed.
+- `scripts` - one-off scripts: user seed and character seed.
 
 ## Conventions
 
@@ -64,6 +65,11 @@ Set in `.env.local` (never commit it, never print secrets):
 - Cached reads use an internal, non-exported function with `"use cache"`, `cacheLife(...)` and `cacheTag(...)`. Tag names come from `CACHE_TAGS` in `src/lib/cache-tags.ts`.
 - After a mutation, use `updateTag` so the user sees their own write immediately. Use `revalidateTag` only when stale data is acceptable.
 - With Cache Components, anything that reads runtime data (`headers()`, `cookies()`, `searchParams`, uncached fetches) must sit inside a `<Suspense>` boundary. Keep the static shell outside it.
+- Character data comes from MongoDB, Pagination uses `countDocuments()` for the total and `skip`/`limit` sorted by `_id`. Fuzzy search runs Fuse.js over a cached list of all characters.
+- Data model (`characters` and `locations`, `_id` is the API numeric ID):
+  - `status`, `gender`, `species` and `type` are embedded strings. `$jsonSchema` enums validate `status` and `gender`.
+  - `origin` and `location` are extended references `{ id, name }` to a `locations` document. `id` is `null` when the API location is unknown. Cards read `origin.name` with no join.
+  - `image` is the original https://rickandmortyapi.com/ URL. Images are hosted there, not by this app.
 - Remote character images need their host allowed in `next.config.ts` (`images.remotePatterns`).
 
 ### Server Actions security
@@ -100,7 +106,7 @@ Every action is a public POST endpoint. In each action:
 Done:
 
 - Homepage with heading, banner, paginated 3 column character card grid
-- `GET /api/characters` route handler and `getCharacters` Server Action
+- Character data stored in MongoDB (seed script) and read by the `getCharacters` Server Action, with pagination and fuzzy search
 - Email-password authentication (login, signup, sign out, account page, header) with MongoDB storage
 
 To do:
