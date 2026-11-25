@@ -8,32 +8,47 @@ import { normaliseQuery, searchCharactersByName } from "../filters/search";
 import { getCharactersCollection } from "./getCharactersCollection";
 import type { Character, CharacterDocument, CharactersPage } from "./types";
 
-const CARD_PROJECTION = {
+const LOCATIONS_COLLECTION = "locations";
+
+const CARD_FIELDS = {
   name: 1,
   status: 1,
   species: 1,
-  "origin.name": 1,
   image: 1,
+  originName: {
+    // Falls back to the stored name when origin.id is null or has no match.
+    $ifNull: [{ $first: "$originLocation.name" }, "$origin.name"],
+  },
+} as const;
+
+const ORIGIN_LOOKUP = {
+  $lookup: {
+    from: LOCATIONS_COLLECTION,
+    localField: "origin.id",
+    foreignField: "_id",
+    pipeline: [{ $project: { name: 1 } }],
+    as: "originLocation",
+  },
 } as const;
 
 type CardDocument = Pick<
   CharacterDocument,
   "_id" | "name" | "status" | "species" | "image"
-> & { origin: { name: string } };
+> & { originName: string };
 
 const toCharacter = ({
   _id,
   name,
   status,
   species,
-  origin,
+  originName,
   image,
 }: CardDocument): Character => ({
   id: _id,
   name,
   status,
   species,
-  origin: { name: origin.name },
+  origin: { name: originName },
   image,
 });
 
@@ -43,18 +58,22 @@ async function getCharactersByPage(page: number): Promise<CharactersPage> {
   cacheTag(CACHE_TAGS.characters);
 
   const collection = getCharactersCollection();
+  // Paginate before the lookup so only one page of locations is joined.
   const [documents, totalCount] = await Promise.all([
     collection
-      .find({}, { projection: CARD_PROJECTION })
-      .sort({ _id: 1 })
-      .skip((page - 1) * PAGE_SIZE)
-      .limit(PAGE_SIZE)
+      .aggregate<CardDocument>([
+        { $sort: { _id: 1 } },
+        { $skip: (page - 1) * PAGE_SIZE },
+        { $limit: PAGE_SIZE },
+        ORIGIN_LOOKUP,
+        { $project: CARD_FIELDS },
+      ])
       .toArray(),
     collection.countDocuments(),
   ]);
 
   return {
-    characters: (documents as CardDocument[]).map(toCharacter),
+    characters: documents.map(toCharacter),
     page,
     totalPages: Math.ceil(totalCount / PAGE_SIZE),
     totalCount,
@@ -67,11 +86,14 @@ async function getAllCharactersFromDb(): Promise<Character[]> {
   cacheTag(CACHE_TAGS.characters);
 
   const documents = await getCharactersCollection()
-    .find({}, { projection: CARD_PROJECTION })
-    .sort({ _id: 1 })
+    .aggregate<CardDocument>([
+      { $sort: { _id: 1 } },
+      ORIGIN_LOOKUP,
+      { $project: CARD_FIELDS },
+    ])
     .toArray();
 
-  return (documents as CardDocument[]).map(toCharacter);
+  return documents.map(toCharacter);
 }
 
 async function searchCharactersByPage(
