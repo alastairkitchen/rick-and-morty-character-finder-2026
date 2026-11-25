@@ -63,7 +63,6 @@ async function fetchCharactersPage(page: number): Promise<CharactersPage> {
   };
 }
 
-// The API only supports exact substring filtering, so fuzzy search needs the full list.
 async function fetchAllCharacters(): Promise<Character[]> {
   "use cache";
   cacheLife("hours");
@@ -102,7 +101,6 @@ export async function getCharacters(
   page: number,
   query?: string,
 ): Promise<CharactersPage> {
-  // Action inputs are untrusted; normalise before use.
   const pageNumber = parsePageNumber(page);
   const normalisedQuery = normaliseQuery(query);
 

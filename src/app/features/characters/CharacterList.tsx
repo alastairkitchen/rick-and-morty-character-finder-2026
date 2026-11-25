@@ -1,4 +1,4 @@
-import { getCharacters, revalidateCharacters } from "./actions";
+import { getCharacters } from "./actions";
 import { getFavouriteIds } from "@/app/features/favourites/actions";
 import { getSession } from "@/app/features/auth/session";
 import { CharacterCard } from "./CharacterCard";

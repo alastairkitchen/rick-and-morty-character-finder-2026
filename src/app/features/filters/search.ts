@@ -19,7 +19,6 @@ export const searchCharactersByName = (
   new Fuse(characters, {
     keys: ["name"],
     threshold: 0.3,
-    // Match anywhere in the name, not just near the start.
     ignoreLocation: true,
   })
     .search(query)
