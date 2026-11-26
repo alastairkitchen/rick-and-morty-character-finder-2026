@@ -10,7 +10,6 @@ export const CARD_FIELDS = {
   species: 1,
   image: 1,
   originName: {
-    // Falls back to the stored name when origin.id is null or has no match.
     $ifNull: [{ $first: "$originLocation.name" }, "$origin.name"],
   },
 } as const;

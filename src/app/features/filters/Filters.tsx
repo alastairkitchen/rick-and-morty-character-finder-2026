@@ -8,7 +8,7 @@ import { getHomeHref, normaliseQuery } from "./search";
 
 import { useSearchTransition } from "./SearchTransitionProvider";
 
-export const SEARCH_DEBOUNCE_MS = 500;
+export const SEARCH_DEBOUNCE_MS = 300;
 
 interface FiltersProps {
   query: string;
