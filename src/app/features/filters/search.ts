@@ -17,7 +17,8 @@ export const searchCharactersByName = (
   query: string,
 ): Character[] =>
   new Fuse(characters, {
-    keys: ["name"],
+    useTokenSearch: true,
+    keys: ["name", "species", "status", "origin.name"],
     threshold: 0.3,
     ignoreLocation: true,
   })
