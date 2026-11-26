@@ -12,9 +12,10 @@ export const SEARCH_DEBOUNCE_MS = 500;
 
 interface FiltersProps {
   query: string;
+  basePath?: string;
 }
 
-export const Filters = ({ query }: FiltersProps) => {
+export const Filters = ({ query, basePath = "/" }: FiltersProps) => {
   const router = useRouter();
   const { isPending, startTransition } = useSearchTransition();
   const [value, setValue] = useState(query);
@@ -36,12 +37,14 @@ export const Filters = ({ query }: FiltersProps) => {
     const timeout = setTimeout(() => {
       setPushed(next);
       startTransition(() => {
-        router.replace(getHomeHref({ query: next }), { scroll: false });
+        router.replace(getHomeHref({ basePath, query: next }), {
+          scroll: false,
+        });
       });
     }, SEARCH_DEBOUNCE_MS);
 
     return () => clearTimeout(timeout);
-  }, [value, pushed, router, startTransition]);
+  }, [value, pushed, router, startTransition, basePath]);
 
   return (
     <div className="w-full max-w-sm">

@@ -1,4 +1,4 @@
-import { LogIn, LogOut, User } from "lucide-react";
+import { Heart, LogIn, LogOut, User } from "lucide-react";
 import Link from "next/link";
 import { Suspense } from "react";
 
@@ -21,6 +21,13 @@ const HeaderActions = async () => {
 
   return (
     <div className="flex items-center gap-2">
+      <Link
+        href="/favourites"
+        aria-label="Favourites"
+        className={buttonVariants({ variant: "ghost", size: "icon" })}
+      >
+        <Heart />
+      </Link>
       <Link
         href="/account"
         aria-label="Account"

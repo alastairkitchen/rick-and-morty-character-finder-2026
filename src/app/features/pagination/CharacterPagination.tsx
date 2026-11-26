@@ -14,16 +14,18 @@ interface CharacterPaginationProps {
   currentPage: number;
   totalPages: number;
   query?: string;
+  basePath?: string;
 }
 
 export const CharacterPagination = ({
   currentPage,
   totalPages,
   query = "",
+  basePath = "/",
 }: CharacterPaginationProps) => {
   if (totalPages <= 1) return null;
 
-  const pageHref = (page: number) => getHomeHref({ query, page });
+  const pageHref = (page: number) => getHomeHref({ basePath, query, page });
   const pageItems = getPageItems(currentPage, totalPages);
 
   return (

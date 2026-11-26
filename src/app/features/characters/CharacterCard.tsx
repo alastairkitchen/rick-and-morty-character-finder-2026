@@ -1,5 +1,6 @@
 import "server-only";
 import Image from "next/image";
+import type { ReactNode } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { FavouriteButton } from "@/app/features/favourites/FavouriteButton";
 
@@ -15,11 +16,14 @@ const statusDotClass: Record<CharacterStatus, string> = {
 interface CharacterCardProps {
   character: Character;
   favourited?: boolean;
+  // Replaces the default favourite button, for example on the favourites page.
+  actions?: ReactNode;
 }
 
 export const CharacterCard = async ({
   character,
   favourited,
+  actions,
 }: CharacterCardProps) => {
   const { id, name, status, species, origin, image } = character;
 
@@ -57,13 +61,14 @@ export const CharacterCard = async ({
             <p className="text-muted-foreground">Origin</p>
             <p>{origin.name}</p>
           </div>
-          {favourited !== undefined && (
-            <FavouriteButton
-              characterId={id}
-              characterName={name}
-              favourited={favourited}
-            />
-          )}
+          {actions ??
+            (favourited !== undefined && (
+              <FavouriteButton
+                characterId={id}
+                characterName={name}
+                favourited={favourited}
+              />
+            ))}
         </CardContent>
       </div>
     </Card>

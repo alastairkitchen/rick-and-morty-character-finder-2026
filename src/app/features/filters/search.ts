@@ -25,9 +25,11 @@ export const searchCharactersByName = (
     .map(({ item }) => item);
 
 export const getHomeHref = ({
+  basePath = "/",
   query = "",
   page = 1,
 }: {
+  basePath?: string;
   query?: string;
   page?: number;
 }): string => {
@@ -35,5 +37,5 @@ export const getHomeHref = ({
   if (query) params.set("q", query);
   if (page > 1) params.set("page", String(page));
   const search = params.toString();
-  return search ? `/?${search}` : "/";
+  return search ? `${basePath}?${search}` : basePath;
 };

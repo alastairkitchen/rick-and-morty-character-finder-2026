@@ -6,51 +6,13 @@ import { CACHE_TAGS } from "@/lib/cache-tags";
 import { PAGE_SIZE, parsePageNumber } from "../pagination/pagination";
 import { normaliseQuery, searchCharactersByName } from "../filters/search";
 import { getCharactersCollection } from "./getCharactersCollection";
-import type { Character, CharacterDocument, CharactersPage } from "./types";
-
-const LOCATIONS_COLLECTION = "locations";
-
-const CARD_FIELDS = {
-  name: 1,
-  status: 1,
-  species: 1,
-  image: 1,
-  originName: {
-    // Falls back to the stored name when origin.id is null or has no match.
-    $ifNull: [{ $first: "$originLocation.name" }, "$origin.name"],
-  },
-} as const;
-
-const ORIGIN_LOOKUP = {
-  $lookup: {
-    from: LOCATIONS_COLLECTION,
-    localField: "origin.id",
-    foreignField: "_id",
-    pipeline: [{ $project: { name: 1 } }],
-    as: "originLocation",
-  },
-} as const;
-
-type CardDocument = Pick<
-  CharacterDocument,
-  "_id" | "name" | "status" | "species" | "image"
-> & { originName: string };
-
-const toCharacter = ({
-  _id,
-  name,
-  status,
-  species,
-  originName,
-  image,
-}: CardDocument): Character => ({
-  id: _id,
-  name,
-  status,
-  species,
-  origin: { name: originName },
-  image,
-});
+import {
+  CARD_FIELDS,
+  ORIGIN_LOOKUP,
+  toCharacter,
+  type CardDocument,
+} from "./cardQuery";
+import type { Character, CharactersPage } from "./types";
 
 async function getCharactersByPage(page: number): Promise<CharactersPage> {
   "use cache";

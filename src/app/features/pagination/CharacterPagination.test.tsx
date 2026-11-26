@@ -40,6 +40,22 @@ describe("CharacterPagination", () => {
     );
   });
 
+  it("builds page links for another base path", () => {
+    render(
+      <CharacterPagination
+        currentPage={1}
+        totalPages={3}
+        query="rick"
+        basePath="/favourites"
+      />,
+    );
+
+    expect(screen.getByRole("link", { name: "2" })).toHaveAttribute(
+      "href",
+      "/favourites?q=rick&page=2",
+    );
+  });
+
   it("hides previous on first page and next on last page", () => {
     const { rerender } = render(
       <CharacterPagination currentPage={1} totalPages={3} />,

@@ -64,6 +64,8 @@ describe("getHomeHref", () => {
     [{ page: 3 }, "/?page=3"],
     [{ query: "rick" }, "/?q=rick"],
     [{ query: "rick sanchez", page: 2 }, "/?q=rick+sanchez&page=2"],
+    [{ basePath: "/favourites" }, "/favourites"],
+    [{ basePath: "/favourites", query: "rick", page: 2 }, "/favourites?q=rick&page=2"],
   ])("builds %p as %p", (input, expected) => {
     expect(getHomeHref(input)).toBe(expected);
   });
