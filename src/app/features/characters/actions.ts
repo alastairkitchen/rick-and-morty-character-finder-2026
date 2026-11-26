@@ -11,7 +11,7 @@ import {
   ORIGIN_LOOKUP,
   toCharacter,
   type CardDocument,
-} from "./cardQuery";
+} from "./actions-utils";
 import type { Character, CharactersPage } from "./types";
 
 async function getCharactersByPage(page: number): Promise<CharactersPage> {

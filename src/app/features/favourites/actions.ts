@@ -9,7 +9,7 @@ import {
   ORIGIN_LOOKUP,
   toCharacter,
   type CardDocument,
-} from "@/app/features/characters/cardQuery";
+} from "@/app/features/characters/actions-utils";
 import { CHARACTERS_COLLECTION } from "@/app/features/characters/getCharactersCollection";
 import type {
   Character,
@@ -56,7 +56,9 @@ async function getCachedFavouriteCharacters(
           localField: "characterId",
           foreignField: "_id",
           pipeline: [
-            { $project: { name: 1, status: 1, species: 1, image: 1, origin: 1 } },
+            {
+              $project: { name: 1, status: 1, species: 1, image: 1, origin: 1 },
+            },
           ],
           as: "character",
         },
