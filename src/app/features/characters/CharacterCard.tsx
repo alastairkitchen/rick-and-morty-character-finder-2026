@@ -1,4 +1,3 @@
-import "server-only";
 import Image from "next/image";
 import type { ReactNode } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -20,7 +19,7 @@ interface CharacterCardProps {
   actions?: ReactNode;
 }
 
-export const CharacterCard = async ({
+export const CharacterCard = ({
   character,
   favourited,
   actions,

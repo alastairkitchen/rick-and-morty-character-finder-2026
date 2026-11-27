@@ -3,7 +3,9 @@ import { render, screen } from "@testing-library/react";
 import { CharacterCard } from "./CharacterCard";
 import type { Character } from "./types";
 
-jest.mock("@/app/features/favourites/actions", () => ({ setFavourite: jest.fn() }));
+jest.mock("@/app/features/favourites/actions", () => ({
+  setFavourite: jest.fn(),
+}));
 
 const base: Character = {
   id: 1,
@@ -46,7 +48,9 @@ describe("CharacterCard", () => {
   it("shows the favourite button when signed in", () => {
     render(<CharacterCard character={base} favourited />);
     expect(
-      screen.getByRole("button", { name: "Remove Rick Sanchez from favourites" }),
+      screen.getByRole("button", {
+        name: "Remove Rick Sanchez from favourites",
+      }),
     ).toHaveAttribute("aria-pressed", "true");
   });
 });
