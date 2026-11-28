@@ -36,7 +36,8 @@ export const FavouritesList = async ({ searchParams }: FavouritesListProps) => {
       {/* The key resets the selection when the page or search changes. */}
       <FavouritesSelectionProvider key={`${page}:${query}`}>
         <div className="space-y-4">
-          <div className="flex flex-wrap items-center gap-4">
+          {/* Sticks to the top on mobile so the remove button stays reachable. */}
+          <div className="flex flex-wrap items-center gap-4 max-md:sticky max-md:top-0 max-md:bg-background max-md:py-2 z-1000">
             <Filters query={query} basePath={FAVOURITES_PATH} />
             <RemoveSelectedFavourites />
           </div>

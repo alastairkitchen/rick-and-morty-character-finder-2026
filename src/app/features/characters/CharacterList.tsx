@@ -30,7 +30,7 @@ export const CharacterList = async ({ searchParams }: CharacterListProps) => {
   return (
     <SearchTransitionProvider>
       <div className="space-y-4">
-        <div className="flex items-start justify-between gap-4">
+        <div className="flex items-start justify-between gap-4 max-md:sticky max-md:top-0 max-md:bg-background max-md:py-2 z-1000">
           <Filters query={query} />
         </div>
         <SearchResults>
