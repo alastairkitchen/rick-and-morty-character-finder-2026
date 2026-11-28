@@ -85,6 +85,8 @@ export async function signUp(
           return { error: "Password must be at least 8 characters." };
         case "PASSWORD_TOO_LONG":
           return { error: "Password is too long." };
+        case "USER_ALREADY_EXISTS_USE_ANOTHER_EMAIL":
+          return { error: "Email already in use please use another email." };
         default:
           return { error: "Could not create your account. Please try again." };
       }
