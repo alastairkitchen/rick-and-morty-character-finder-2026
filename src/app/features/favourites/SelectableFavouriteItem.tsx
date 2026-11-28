@@ -25,7 +25,7 @@ export const SelectableFavouriteItem = ({
       data-selected={selected}
       className={cn(
         "rounded-xl transition-transform duration-200",
-        selected && "z-10 scale-[1.03] ring-2 ring-primary",
+        selected && "z-10 scale-[0.95] ring-2 ring-primary",
       )}
     >
       {children}

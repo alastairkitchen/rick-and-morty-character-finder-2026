@@ -33,7 +33,7 @@ export const FavouriteCardActions = ({
             aria-label={label}
             title={label}
             disabled={isPending}
-            className="cursor-pointer border-red-500 bg-red-500 text-white hover:bg-red-600 hover:text-white dark:border-red-500 dark:bg-red-500 dark:hover:bg-red-600"
+            className="cursor-pointer border-emerald-500 bg-emerald-500 text-white hover:bg-emerald-600 hover:text-white dark:border-emerald-500 dark:bg-emerald-500 dark:hover:bg-emerald-600"
           >
             <Heart aria-hidden />
           </Button>

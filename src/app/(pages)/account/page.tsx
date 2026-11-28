@@ -11,6 +11,9 @@ import {
 import { Skeleton } from "@/components/ui/skeleton";
 import { getSession } from "@/app/features/auth/session";
 import { getFavouriteIdCount } from "@/app/features/favourites/actions";
+import Link from "next/link";
+import { buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 const AccountDetails = async () => {
   const session = await getSession();
@@ -40,7 +43,21 @@ const AccountDetails = async () => {
       </div>
       <div>
         <dt className="text-muted-foreground">Favourited characters</dt>
-        <dd>{favourites.length}</dd>
+        <dd>
+          {favourites.length}
+
+          <p>
+            <Link
+              href="/favourites"
+              className={cn(
+                buttonVariants({ variant: "outline", size: "sm" }),
+                "mt-2",
+              )}
+            >
+              View favourites
+            </Link>
+          </p>
+        </dd>
       </div>
     </dl>
   );

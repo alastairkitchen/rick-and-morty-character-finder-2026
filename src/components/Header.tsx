@@ -23,6 +23,7 @@ const HeaderActions = async () => {
     <div className="flex items-center gap-2">
       <Link
         href="/favourites"
+        title="Favourites"
         aria-label="Favourites"
         className={buttonVariants({ variant: "ghost", size: "icon" })}
       >
@@ -30,6 +31,7 @@ const HeaderActions = async () => {
       </Link>
       <Link
         href="/account"
+        title="Account"
         aria-label="Account"
         className={buttonVariants({ variant: "ghost", size: "icon" })}
       >
