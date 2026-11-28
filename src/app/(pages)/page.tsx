@@ -30,7 +30,7 @@ const SessionIntro = ({
       <Link className="underline" href="/login">
         log in
       </Link>{" "}
-      screen.
+      screen. Alternatively use test account test2@test.com password12345
     </p>
   );
 };
