@@ -17,6 +17,9 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Rick and Morty Character Finder",
   description: "Browse and find characters from Rick and Morty.",
+  icons: {
+    icon: { url: "/favicon.jpg", type: "image/jpeg" },
+  },
 };
 
 const RootLayout = ({ children }: LayoutProps<"/">) => {
