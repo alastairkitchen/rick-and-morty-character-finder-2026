@@ -1,14 +1,42 @@
-import { Suspense } from "react";
+import Link from "next/link";
+import { Suspense, use } from "react";
 
+import { getSession } from "@/app/features/auth/session";
 import {
   CharacterList,
   CharacterListSkeleton,
 } from "@/app/features/characters/CharacterList";
-import Link from "next/link";
-import { getSession } from "../features/auth/session";
 
-const Home = async ({ searchParams }: PageProps<"/">) => {
-  const session = await getSession();
+const SessionIntro = ({
+  sessionPromise,
+}: {
+  sessionPromise: ReturnType<typeof getSession>;
+}) => {
+  const session = use(sessionPromise);
+
+  return session ? (
+    <p className="mt-2 max-w-2xl text-white/90">
+      Add favourite characters by clicking the heart button on character cards.
+      View and manage your favourites on the{" "}
+      <Link className="underline" href="/favourites">
+        Favourites
+      </Link>{" "}
+      screen.
+    </p>
+  ) : (
+    <p className="mt-2 max-w-2xl text-white/90">
+      Log in to create and manage favourite characters. Dont have an account?
+      You can create one by signing up from the{" "}
+      <Link className="underline" href="/login">
+        log in
+      </Link>{" "}
+      screen.
+    </p>
+  );
+};
+
+const Home = ({ searchParams }: PageProps<"/">) => {
+  const sessionPromise = getSession();
 
   return (
     <div className="mx-auto w-full max-w-7xl flex-1 px-4 py-8 sm:px-6">
@@ -29,25 +57,9 @@ const Home = async ({ searchParams }: PageProps<"/">) => {
           alive, who is dead, where they come from, and what species they are.
         </p>
 
-        {session ? (
-          <p className="mt-2 max-w-2xl text-white/90">
-            Add favourite characters by clicking the heart button on character
-            cards. View and manage your favourites on the{" "}
-            <Link className="underline" href="/favourites">
-              Favourites
-            </Link>{" "}
-            screen.
-          </p>
-        ) : (
-          <p className="mt-2 max-w-2xl text-white/90">
-            Log in to create and manage favourite characters. Dont have an
-            account? You can create one by signing up from the{" "}
-            <Link className="underline" href="/login">
-              log in
-            </Link>{" "}
-            screen.
-          </p>
-        )}
+        <Suspense fallback={null}>
+          <SessionIntro sessionPromise={sessionPromise} />
+        </Suspense>
       </section>
       <Suspense fallback={<CharacterListSkeleton />}>
         <CharacterList searchParams={searchParams} />
